@@ -17,7 +17,7 @@ list($lat1, $lon1) = $body['coordinates'][0];
 list($lat2, $lon2) = $body['coordinates'][1];
 
 // Ta clé API Google (idéalement stockée en var d’environnement)
-$GOOGLE_KEY = getenv('GOOGLE_API_KEY') ?: 'AIzaSyBJi-b_Ls55RzrErulSt2gjU17F7wSDPck';
+$GOOGLE_KEY = getenv('GOOGLE_API_KEY') ?: '';
 
 $url = sprintf(
   'https://maps.googleapis.com/maps/api/directions/json?origin=%1$F,%2$F'
