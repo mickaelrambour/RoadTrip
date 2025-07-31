@@ -1,0 +1,1219 @@
+:root {
+  /* — Fonds & textes — */
+  --bg:               #E0E5EC;        /* gris perle clair */
+  --header-footer-bg: rgba(224,229,236,0.8);
+  --text:             #2E3A46;        /* bleu-gris foncé */
+  --text-muted:       #5E6B7C;
+
+  /* — Cartes — */
+  --bgcard:           #F7F9FB;        /* blanc cassé */
+  --border-card:      #CBD2DA;        /* gris doux */
+
+  /* — Accents — */
+  --primary:          #7CAFC2;        /* bleu glacier */
+  --secondary:        #5C9AB8;        /* bleu acier */
+  --highlight:        #D2E8F2;        /* bleu très pâle */
+
+  /* — Ombres Neumorphism — */
+  --shadow-light:     rgba(255,255,255,0.7);
+  --shadow-dark:      rgba(0,0,0,0.1);
+
+  /* — Taille icônes météo — */
+  --weather-icon-size: 3rem;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--textbg);
+  height: 100%;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  /* gap: 1rem; */
+  min-height: 100vh; /* ✅ Ajoute ça ici */
+}
+
+.card {
+  background: var(--bgcard);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+  padding: 1rem;
+}
+
+/* hauteur fixe pour chaque module */
+.timeline-card,
+.gallery-card,
+.journal-card,
+.comments-card { height: 18vh; overflow-y:auto; }
+
+/* Header & Footer du dashboard */
+header.dashboard-header,
+footer.dashboard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--header-footer-bg);
+  color: var(--text);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow);
+  grid-column: 1 / -1;
+}
+
+header.dashboard-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+#countdown {
+  font-weight: bold;
+}
+
+.map-area {
+  display: flex;
+
+  gap: 1.5rem;
+  align-items: flex-start;
+  max-width: 1200px;
+  padding: 0 1rem;
+
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.map-card {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 900px) {
+  .map-card {
+    grid-column: span 2;
+  }
+
+
+}
+
+.map-card {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 900px) {
+  .map-card {
+    grid-column: span 2;
+  }
+}
+
+#map {
+  /* réglages par défaut desktop inchangés */
+  flex: 2;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  height: 34vh;
+  min-width: 70%;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+/* markers & popup styles */
+.marker-number {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background: var(--primary);
+  color: var(--text);
+  border-radius: 50%;
+  border: 2px solid var(--text);
+  font-weight: 700;
+  box-shadow: 0 2px 6px var(--shadow);
+  font-size: 1rem;
+
+  flex: 1 1 60%;
+  width: 100%;
+
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+.popup-container { width:220px; padding:.5rem; }
+.popup-header { margin-bottom:.5rem; text-align:center; color:var(--primary); border-bottom:1px solid var(--bg); padding-bottom:.3rem; }
+.popup-desc { margin-bottom:.5rem; font-size:.85rem; color:var(--text); }
+.popup-lodging { margin-bottom:.75rem; font-size:.75rem; color:var(--text); font-style:italic; }
+.photo-preview { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.5rem; justify-content:center; }
+.photo-preview img { width:60px; height:60px; object-fit:cover; transition:transform .2s; border-radius:4px; cursor:pointer; }
+.photo-preview img:hover { transform:scale(1.1); }
+.upload-btn { border-radius:4px; cursor:pointer; width:100%; padding:.5rem; background:var(--primary); color:var(--text); border:0; font-size:.9rem; transition:background .2s; }
+.upload-btn:hover { background:var(--secondary); }
+.user-marker { display:flex; flex-direction:column; align-items:center; pointer-events:none; }
+.user-marker-img { width:32px; height:32px; border-radius:50%; border:2px solid var(--text); box-shadow:0 0 2px var(--shadow); }
+.user-marker-label { margin-top:4px; background:rgba(255,255,255,0.9); color:var(--primary); padding:2px 6px; border-radius:4px; font-size:.75rem; white-space:nowrap; box-shadow:0 1px 3px var(--shadow); }
+.leaflet-marker-icon.leaflet-interactive { border-radius:50%; box-shadow:0 2px 6px var(--shadow); }
+
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.timeline-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+  padding: 0 1rem 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.timeline-grid.active {
+  cursor: grabbing;
+}
+
+.timeline-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline-grid .tl-item {
+  position: relative;
+  flex: 0 0 200px;
+  flex: 0 0 180px;
+  flex: 0 0 220px;
+  scroll-snap-align: start;
+  background: var(--text);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  text-align: center;
+}
+.timeline-grid .tl-item h4 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+.timeline-grid .tl-item p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.timeline-grid .tl-item .progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--primary);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 0%;
+  transition: width .4s;
+}
+.timeline-grid .tl-item.current {
+  border-left: 4px solid var(--primary);
+}
+.timeline-grid .tl-item.passed {
+  opacity: 0.5;
+}
+.timeline-grid .tl-item.hebergement {
+  border: 2px solid var(--secondary);
+}
+
+.gallery-grid {
+
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+  padding: 0 1rem 0.5rem;
+
+  padding-bottom: 0.5rem;
+
+}
+.gallery-grid.active {
+  cursor: grabbing;
+}
+.gallery-grid::-webkit-scrollbar {
+  display: none;
+
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  margin-bottom: 1rem;
+}
+
+.gallery-grid .gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.gallery-grid .gallery-item img {
+  width: 100%;
+  display: block;
+}
+
+.gallery-grid .city-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(27,42,58,0.7);
+  color: var(--bgcard);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+#load-more-gallery {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  background: var(--secondary);
+  color: var(--text);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#load-more-gallery:hover {
+  opacity: 0.9;
+}
+
+#journal-content {
+  display: none;
+  margin-top: 0.5rem;
+}
+
+#journal-content.show {
+  display: block;
+}
+
+#guestbook-form,
+.comments-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#guestbook-form textarea,
+.comments-card input[type=text],
+.comments-card textarea {
+  padding: 0.5rem;
+  border: 1px solid var(--bg);
+  border-radius: 6px;
+  font: inherit;
+}
+
+#guestbook-form button,
+.comments-card button {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--primary);
+  color: var(--text);
+  cursor: pointer;
+}
+
+#guestbook-messages,
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color:var(--text)
+}
+
+#guestbook-messages li,
+.comment-list li {
+  background: var(--bg);
+
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.comment-list li {
+  background: var(--bg);
+
+  border-left: 4px solid var(--secondary);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px var(--shadow);
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+}
+.comment-list li .cm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.comment-list li .cm-author {
+  font-weight: 700;
+  color: var(--secondary);
+  font-size: 1.05rem;
+}
+.comment-list li .cm-date {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+
+.upload-fixed-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--secondary);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow);
+  cursor: pointer;
+}
+
+.upload-fixed-btn:hover {
+  opacity: 0.9;
+
+}
+
+@media (max-width: 800px) {
+  .map-area {
+    flex-direction: column;
+  }
+  .map-area #map,
+  .map-area .sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1000px) {
+  #map {
+    width: 100%;
+    height: 35vh;
+    min-width: 100%;
+  }
+}
+.upload-fixed-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--secondary);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow);
+  cursor: pointer;
+}
+
+.upload-fixed-btn:hover {
+  opacity: 0.9;
+}
+
+/* lightbox pour la galerie */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: rgba(0,0,0,0.85);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+#lightbox.show { display:flex; }
+#lightbox img { max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 0 15px var(--shadow); }
+.lightbox-title { position:absolute; top:20px; color:var(--text); background:rgba(0,0,0,0.6); padding:6px 14px; border-radius:8px; }
+.lightbox-arrow,.lightbox-close { position:absolute; color:var(--text); border:0; cursor:pointer; z-index:10001; }
+.lightbox-close { top:20px; right:30px; font-size:2em; background:none; }
+.lightbox-arrow { top:50%; transform:translateY(-50%); font-size:3em; background:rgba(0,0,0,0.3); border-radius:50%; width:60px; height:60px; transition:background .2s; }
+.lightbox-arrow:hover { background:rgba(255,255,255,0.2); }
+.arrow-left { left:30px; }
+.arrow-right { right:30px; }
+.lightbox-counter { position:absolute; bottom:15px; left:50%; transform:translateX(-50%); color:var(--text); background:rgba(0,0,0,0.6); padding:6px 12px; border-radius:6px; font-size:14px; }
+
+@media (max-width: 800px) {
+  .map-area {
+    flex-direction: column;
+  }
+  .map-area #map,
+  .map-area .sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1000px) {
+  #map {
+    width: 100%;
+    min-height: 530px;
+    height: 35vh;
+    min-width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  #map {
+    flex-basis: 100%;
+    height: 350px;
+  }
+  .dashboard {
+    grid-template-columns: 1fr;
+
+  }
+  .dashboard {
+    grid-template-columns: 1fr;
+
+  }
+  .timeline-card,
+  .gallery-card,
+  .journal-card,
+  .comments-card { height: 300px; }
+}
+
+/* ================================
+   Timeline – container as Grid
+   ================================ */
+.timeline-card .timeline-grid {
+  display: grid;
+  /* colonnes auto-adaptives, min-width 220px */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;            /* un peu d’air au-dessus/sous */
+  /* on supprime l’overflow horizontal / scroll-snap */
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+/* ================================
+   Timeline – chaque carte
+   ================================ */
+.timeline-card .timeline-item {
+  background: var(--text);
+  border: 1px solid var(--gray-200);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 1rem;
+  position: relative;
+  transition: border-color 0.3s ease,
+              box-shadow   0.3s ease,
+              transform     0.3s ease;
+}
+.timeline-card .timeline-item:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+/* titres et textes */
+.timeline-card .timeline-item h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.timeline-card .timeline-item .date {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.timeline-card .timeline-item .weather {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+}
+
+/* états */
+.timeline-card .timeline-item.passed {
+  opacity: 0.6;
+}
+.timeline-card .timeline-item.current {
+  border-color: var(--primary);
+  border-left-width: 4px;
+}
+.timeline-card .timeline-item.hebergement {
+  border-color: var(--secondary);
+}
+.timeline-card .timeline-item.village {
+  border-style: dashed;
+}
+.timeline-card .timeline-item.point {
+  border-style: dotted;
+}
+/* ——————————————————————————
+   Reset des colors & accents “comme avant”
+   —————————————————————————— */
+
+/* barre de progression */
+.timeline-card .timeline-item .progress-bar {
+  background: var(--primary);
+}
+
+/* étape courante : violet à gauche */
+.timeline-card .timeline-item.current {
+  border-left: 4px solid var(--primary);
+}
+
+/* étape déjà passée : un peu transparent */
+.timeline-card .timeline-item.passed {
+  opacity: 0.5;
+}
+
+/* hébergement (ou autre “flag”) : trait corail */
+.timeline-card .timeline-item.hebergement {
+  border: 2px solid var(--secondary);
+}
+/* ======================================
+   Galerie photos – grille uniforme
+   ====================================== */
+.gallery-card .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+/* chaque image à taille fixe, recadrage centré */
+.gallery-card .gallery-grid img {
+  width: 100%;
+  height: 120px;         /* ajuste la hauteur qui te convient */
+  object-fit: cover;     /* crop automatique centrée */
+  border-radius: 0.5rem; /* si tu veux les arrondis */
+  display: block;        /* évite les lignes blanches sous img */
+}
+
+body, .dashboard {
+  background: var(--bg);
+  color: var(--text);
+}
+header.dashboard-header,
+footer.dashboard-footer {
+  background: var(--header-footer-bg);
+  color: var(--text);
+}
+.card {
+  background: var(--bgcard);
+  border: 1px solid var(--border-card);
+  color: var(--text);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.date, .weather, .comment-list small {
+  color: var(--text-muted);
+}
+button, .timeline-item.current {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--bg); /* texte sombre sur accents clairs */
+}
+.timeline-item.hebergement {
+  border-color: var(--secondary);
+}
+.highlight, a:hover {
+  color: var(--highlight);
+}
+/* conteneur grid */
+.timeline-card .timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+/* each item */
+.timeline-card .timeline-item {
+  background: var(--bgcard);
+  border-left: 4px solid var(--border-card);
+  padding: 1rem;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* état “courant” : légère touche verte + bord gauche vif */
+.timeline-card .timeline-item.current {
+  background-color: rgba(57, 255, 20, 0.1);      /* 10% de ton vert néon */
+  border-left-color: var(--primary);
+}
+
+/* hébergement (ou autre flag) : rouge doux + bord rouge vif */
+.timeline-card .timeline-item.hebergement {
+  background-color: rgba(255, 255, 255, 0.1);        /* 10% de ton rouge vif */
+  border-left-color: var(--secondary);
+}
+
+/* si tu veux un 3ème état “highlight” en bleu */
+.timeline-card .timeline-item.highlight {
+  background-color: rgba(58, 134, 255, 0.1);      /* 10% de ton bleu électrique */
+  border-left-color: var(--highlight);
+}
+.timeline-card .timeline-item h4 {
+  margin: 0 0 .5rem;
+}
+.timeline-card .timeline-item .date,
+.timeline-card .timeline-item .weather {
+  color: var(--text);  /* même couleur que le texte principal */
+}
+
+/* tu peux toujours atténuer les étapes passées */
+.timeline-card .timeline-item.passed {
+  opacity: 0.6;
+}
+/* Timeline draggable verticalement */
+.timeline-card .timeline-grid {
+  overflow-y: auto;        /* scroll vertical */
+  cursor: grab;            /* indicateur de drag */
+  user-select: none;       /* désactive la sélection de texte */
+}
+
+/* Classe ajoutée pendant le drag */
+.timeline-card .timeline-grid.dragging {
+  cursor: grabbing;
+}
+
+/* À l’intérieur, on peut autoriser la sélection si besoin sur les textes */
+.timeline-card .timeline-grid .timeline-item {
+  user-select: none;
+  color: var(--text)
+}
+
+@media (max-width: 600px) {
+  .map-area {
+    display: flex;
+    flex-direction: column; /* empile map puis sidebar */
+    align-items: center;
+  }
+
+  #map {
+    width: 100%;       /* plein écran horizontal */
+    min-width: 0;      /* annule le min-width desktop */
+    height: 50vh;      /* un peu plus de hauteur sur mobile */
+    margin: 1rem 0;    /* espace avant/après */
+  }
+
+  .sidebar {
+    width: 100%;       /* la sidebar prend toute la largeur */
+    margin-top: 1rem;  /* espace entre map & sidebar */
+  }
+}
+
+@media (max-width: 600px) {
+  .map-card {
+    overflow: visible !important;
+  }
+}
+footer.dashboard-footer p {
+  margin: 0 auto;       /* pousse le <p> au centre */
+  text-align: center;   /* centre le texte à l’intérieur */
+  width: fit-content;   /* ou width:100% si besoin */
+}
+
+/* hauteur auto et scroll si nécessaire */
+.reservations-card {
+  grid-column: 1 / -1;     /* occupe toute la largeur de la grille */
+  height: auto;            /* laisse la table définir la hauteur */
+  max-height: 500px;       /* ou ce que tu souhaites */
+  overflow-y: auto;        /* scroll interne si trop grand */
+}
+
+/* style de la table responsive */
+.table-responsive {
+  overflow-x: auto;
+}
+#reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#reservations-table th,
+#reservations-table td {
+  padding: 0.5rem;
+  border: 1px solid var(--border-card);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+#reservations-table th {
+  background: var(--bgcard);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Parent en position relative pour que l’enfant absolu se base dessus */
+#weather-widget {
+  position: relative;
+  /* on ajoute un padding à droite pour que le texte n’aille pas sous l’icône */
+  padding-right: 4rem; 
+}
+
+/* Icône positionnée en haut-droite */
+#weather-widget .weather-icon {
+  position: absolute;      /* si tu l’as déjà positionnée */
+  top: 1rem;               /* conserve tes réglages de position */
+  right: 1rem;
+  display: inline-block;   /* pour que font-size s’applique */
+  font-size: var(--weather-icon-size) !important;
+  line-height: 1;          /* pour garder l’emoji centré */
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><circle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.03)'/></svg>");
+  background-repeat: repeat;
+  background-size: 4px 4px;
+  z-index: 0;
+}
+
+
+.photo-marker-icon {
+  font-size: 24px;
+  text-align: center;
+  line-height: 28px;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+}
+
+.leaflet-control-container .leaflet-control-fullscreen {
+  top: 10px;
+  right: 10px;
+  left: auto;
+}
+
+.leaflet-control-fullscreen-button {
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
+html, body {
+  height: 100%;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "header  header"
+    "map     timeline"
+    "footer  footer";
+}
+.header {
+  grid-area: header;
+}
+.map-section {
+  grid-area: map;
+}
+.timeline {
+  grid-area: timeline;
+}
+.footer {
+  grid-area: footer;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  background: transparent; /* ou rien du tout */
+}
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+html, body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+/* Wrapper général */
+.dashboard-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Grille principale en 3 colonnes */
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+  width: 70vw;
+  max-width: 1100px;
+}
+
+/* Sections classiques */
+.map-card        { grid-column: 1 / 3; }
+.timeline-card   { grid-column: 3 / 4; height: 37vh}
+.gallery-card    { grid-column: 1 / 4;min-height: 23vh; }
+.reservations-card { grid-column: 1 / 4; }
+.dashboard-footer { grid-column: 1 / 4; }
+
+/* ✅ Section journal + messages côte à côte */
+.card-row {
+  grid-column: 1 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* deux moitiés égales */
+  gap: 1rem;
+}
+
+/* S'assurer que les deux cartes aient le même style */
+.card-row .card {
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* (optionnel) Unifier la hauteur */
+.card-row .journal-card,
+.card-row .comments-card {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Responsive mobile : passe tout en colonne */
+@media (max-width: 900px) {
+  .grid-dashboard {
+    grid-template-columns: 1fr;
+    width: 90vw;
+  }
+
+  .map-card,
+  .timeline-card,
+  .gallery-card,
+  .journal-card,
+  .comments-card,
+  .reservations-card {
+    grid-column: 1 / 2;
+  }
+
+  /* Ajoute ceci 👇 */
+  .card-row {
+    grid-template-columns: 1fr !important; /* une seule colonne */
+  }
+}
+@media (max-width: 900px) {
+  .card-row {
+    grid-template-columns: 1fr !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .card-row .card {
+    width: 100% !important;
+    max-width: 100%;
+  }
+}
+
+
+
+/* Fond météo dynamique */
+
+body.clear {
+  background: linear-gradient(to top, #87CEEB, #ffffff);
+  color: #000;
+}
+
+body.cloudy {
+  background: linear-gradient(to top, #b0c4de, #d3d3d3);
+  color: #222;
+}
+
+body.rainy {
+  background: linear-gradient(to top, #4a4a4a, #2c3e50);
+  color: #fff;
+}
+
+body.snowy {
+  background: linear-gradient(to top, #e0f7fa, #ffffff);
+  color: #333;
+}
+
+body.night {
+  background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+  color: #eee;
+}
+
+body.day {
+  background: linear-gradient(to top, #FFEEAD, #FFD194);
+  color: #000;
+}
+
+/* ========== Reset & Base ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ========== Wrapper principal ========== */
+.dashboard-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* Grille principale : mobile à desktop via media query */
+.grid-dashboard {
+  display: grid;
+  gap: 1rem;
+  width: 90vw;
+  max-width: 1400px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .grid-dashboard {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* ========== Cartes ========== */
+.card {
+  background: var(--bgcard);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow-dark);
+  padding: 1rem;
+}
+
+/* ========== Placement des sections ========== */
+/* Header et footer span full width */
+header.dashboard-header,
+footer.dashboard-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--header-footer-bg);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow-dark);
+}
+
+/* Map & Timeline */
+.map-card {
+  grid-column: 1 / -1;
+}
+.timeline-card {
+  grid-column: 1 / -1;
+}
+@media (min-width: 900px) {
+  .map-card {
+    grid-column: 1;
+  }
+  .timeline-card {
+    grid-column: 2;
+  }
+}
+
+/* Gallery, Reservations full width */
+.gallery-card,
+.reservations-card,
+.dashboard-footer {
+  grid-column: 1 / -1;
+}
+
+/* ========== Cartes spécifiques ========== */
+.timeline-card,
+.gallery-card,
+.journal-card,
+.comments-card {
+  min-height: 22vh;
+  overflow-y: auto;
+}
+
+/* ========== Journal & Messages côte-à-côte ========== */
+.card-row {
+  display: grid;
+  gap: 1rem;
+  grid-column: 1 / -1;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .card-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ========== Styles internes ========== */
+.map-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.map-area #map {
+  flex: 2;
+  width: 100%;
+  height: 34vh;
+  border-radius: 12px;
+}
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Timeline grid */
+.timeline-card .timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+/* Gallery grid */
+.gallery-card .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+/* Journal toggle */
+#journal-content { display: none; margin-top: 0.5rem; }
+#journal-content.show { display: block; }
+
+/* Weather widget */
+#weather-widget {
+  position: relative;
+  padding-right: 3.5rem;
+}
+#weather-widget .weather-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: var(--weather-icon-size);
+}
+
+/* Fond météo */
+body.clear { background: linear-gradient(to top, #87CEEB, #ffffff); color: #000; }
+body.cloudy { background: linear-gradient(to top, #b0c4de, #d3d3d3); color: #222; }
+body.rainy { background: linear-gradient(to top, #4a4a4a, #2c5364); color: #fff; }
+body.snowy { background: linear-gradient(to top, #e0f7fa, #ffffff); color: #333; }
+body.night { background: linear-gradient(to top, #0f2027, #203a43, #2c5364); color: #eee; }
+body.day   { background: linear-gradient(to top, #FFEEAD, #FFD194); color: #000; }
+
+/* ========== Responsive mobile ========== */
+@media (max-width: 900px) {
+  .grid-dashboard {
+    grid-template-columns: 1fr;
+    width: 90vw;
+  }
+}
+
+/* ===== Modal Overlay ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 10000;
+}
+
+/* ===== Modal Content ===== */
+.modal-content {
+  position: relative;
+  background: var(--bgcard);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px var(--shadow-dark);
+}
+
+/* ===== Close Button ===== */
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* Optionnel : transition */
+.modal,
+.modal-content {
+  transition: opacity 0.3s ease;
+}
+
+.youtube-dashboard {
+  padding: 2rem;
+  background: #1a1f2b;
+  color: #fff;
+  max-width: 900px;
+  margin: auto;
+  border-radius: 8px;
+}
+
+.input-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.input-section input {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+}
+
+.input-section button {
+  padding: 0.7rem 1.2rem;
+  background-color: #5da5c2;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.youtube-card {
+  background-color: var(--bgcard);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  grid-column: 1 / -1;
+}
+
+.youtube-card h2 {
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
